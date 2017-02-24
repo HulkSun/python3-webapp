@@ -8,10 +8,10 @@ __version__ = '1.0.0'
 JSON API definition
 '''
 
-import json
-import logging
-import inspect
-import functools
+# import json
+# import logging
+# import inspect
+# import functools
 
 
 class APIError(Exception):
@@ -26,12 +26,16 @@ class APIValueError(APIError):
     def __init__(self, field, message=''):
         super(APIValueError, self).__init__('value:invalid', field, message)
 
- 
+
 class APIResourseNotFoundError(APIError):
     def __init__(self, field, message=''):
-        super(APIResourseNotFoundError, self).__init__('value: not found', field, message)
+        super(APIResourseNotFoundError, self).__init__('value: not found',
+                                                       field,
+                                                       message)
 
 
 class APIPermissionError(APIError):
     def __init__(self, message=''):
-        super(APIPermissionError, self).__init__('permission:forbidden', 'permission', message)
+        super(APIPermissionError, self).__init__('permission:forbidden',
+                                                 'permission',
+                                                 message)

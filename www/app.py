@@ -83,7 +83,9 @@ def response_factory(app, handler):
         if isinstance(r, dict):
             template = r.get('__template__')
             if template is None:
-                resp = web.Response(body=json.dumps(r, ensure_ascii=False, default=lambda o :o.__dict__).encode('utf-8'))
+                resp = web.Response(body=json.dumps(r,
+                                                    ensure_ascii=False,
+                                                    default=lambda o: o.__dict__).encode('utf-8'))
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
@@ -118,8 +120,13 @@ def datatime_filter(t):
 
 @asyncio.coroutine
 def init(loop):
-    yield from orm.create_pool(loop=loop, user='root', password='sunhao884082105', database='awesome')
-    app = web.Application(loop=loop, middlewares=[logger_factory,response_factory])
+    yield from orm.create_pool(loop=loop,
+                               user='root',
+                               password='sunhao884082105',
+                               database='awesome')
+    app = web.Application(loop=loop,
+                          middlewares=[logger_factory, response_factory]
+                          )
     init_jinja2(app, filters=dict(datetime=datatime_filter))
     add_routes(app, 'handlers')
     add_static(app)
