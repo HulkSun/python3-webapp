@@ -34,8 +34,8 @@ def init_jinja2(app, **kw):
     filters = kw.get('filters', None)
     if filters is not None:
         for name, f in filters.items():
-            env.filters[name] = filters
-    app['__templating'] = env
+            env.filters[name] = f
+    app['__templating__'] = env
 
 
 @asyncio.coroutine
@@ -89,7 +89,7 @@ def response_factory(app, handler):
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
-                resp = web.Response(body=app['__template__'].get_template(template).render(**r).encode('utf-8'))
+                resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
                 resp.content_type = 'text/html;charset=utf-8'
                 return resp
         if isinstance(r, int) and r >= 100 and r < 600:
@@ -104,7 +104,7 @@ def response_factory(app, handler):
     return response
 
 
-def datatime_filter(t):
+def datetime_filter(t):
     delta = int(time.time() - t)
     if delta < 60:
         return u'1 min ago.'
@@ -127,7 +127,7 @@ def init(loop):
     app = web.Application(loop=loop,
                           middlewares=[logger_factory, response_factory]
                           )
-    init_jinja2(app, filters=dict(datetime=datatime_filter))
+    init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
     add_static(app)
     srv = yield from loop.create_server(app.make_handler(), '127.0.0.1', 9000)
