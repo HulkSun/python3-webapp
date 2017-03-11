@@ -36,11 +36,11 @@
 					}
 					if (this.password1.length < 6) 
 					{
-						return $form.showFormError('密码长度至少有6个字符')；
+						return $form.showFormError('密码长度至少有6个字符');
 					}
 					if (this.password1 != this.password2) 
 					{
-						return $form.showFormError('两次密码不一致')；
+						return $form.showFormError('两次密码不一致');
 					}
 					var email = this.email.trim().toLowerCase()
 					$form.postJSON('/api/users',{

@@ -9,7 +9,7 @@ configs = {
         'password': 'hulk',
         'database': 'awesome'
     },
-    'session':{
+    'session': {
         'secret': 'Awesome'
     }
 }
